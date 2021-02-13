@@ -6,76 +6,85 @@
         Amrapali
     </title>
     <style>
+        @media print {
+            @page {
+                margin: 0;
+            }
+
+            body {
+                margin: 0;
+            }
+        }
+
         div.row {
             display: flex;
         }
 
         div.box {
+            margin-top: 0.25cm;
             color: black;
             font-size: large;
-            height: 110px;
-            width: 50%;
+            height: 3.4cm;
+            width: 20%;
             /* align-items: center;
             align-self: center; */
             text-align: center;
             vertical-align: middle;
             border: 1px black solid;
+            border-bottom: 0px;
+            border-left: 0px;
+            border-right: 0px;
         }
     </style>
 </head>
 
 <body>
-    <div class="col" id = 'yo'>
+    <div class="col" id='yo'>
     </div>
-    <div class="row">
-        
-    </div>
-
 </body>
-    <script>
-        urlParams = new URLSearchParams(window.location.search);
-        val1 = urlParams.get('val1');
-        val2 = urlParams.get('val2');
-        val3 = urlParams.get('val3');
-        val4 = urlParams.get('val4');
-        if(val1.length < 3)
-        {
-            while(val1.length != 3) {
-                if(val2.length < 3)
-                val1 = '0'+val1;
+<script>
+    urlParams = new URLSearchParams(window.location.search);
+    secretCode = urlParams.get('val1');
+    fixRate = urlParams.get('val2');
+    maxPrice = urlParams.get('val3');
+    productName = urlParams.get('val4');
+    startRow = urlParams.get('val5');
+    startColumn = urlParams.get('val6');
+    totalItems = urlParams.get('val7');
+    printMe = urlParams.get('print');
+    rowCount = totalItems / 5 + ((totalItems % 5 != 0) ? 1 : 0);
+    // for(count = 0, i = 0; count < totalItems; count++, i++)
+    // {
+
+    //     var new_row = document.createElement('div');
+    //     new_row.className = "row";
+    //     new_row.innerHTML = "<div class='box'>
+    //         "</div>"+
+    //         "<div class='box'>Amrapali<br>FixRate<br>ProductName : "+val4+"<br>MRP : "+val2+
+    //         "<br>code : "+val1+generate(3)+val2+
+    //         "</div>";
+    //     document.getElementById('yo').appendChild(new_row);
+    // }
+    console.log(secretCode, fixRate, maxPrice, productName, startRow, startColumn, totalItems, rowCount)
+    for (i = 1; i <= startRow + rowCount; i++) {
+        var new_row = document.createElement('div');
+        new_row.className = "row";
+        for (j = 1; j <= 5; j++) {
+            var new_col = document.createElement('div');
+            new_col.className = "box";
+            if (i > startRow || (i == startRow && j >= startColumn)) {
+                new_col.innerHTML = "Amrapali<br><i>FixRate</i>" + fixRate + "/- <br>ProductName : " + productName + "<br>MRP : " + maxPrice +
+                    "<br>Secret code : " + secretCode;
             }
+            new_row.appendChild(new_col);
         }
-        {
-            while(val2.length != 3) {
-                val2 = '0'+val2;
-            }
-        }
-        for(i=0; i<val3; i++)
-        {
-            var new_row = document.createElement('div');
-            new_row.className = "row";
-            new_row.innerHTML = "<div class='box'>Amrapali<br>FixRate<br>ProductName : "+val4+"<br>MRP : "+val2+
-                "<br>code : "+val1+generate(3)+val2+
-                "</div>"+
-                "<div class='box'>Amrapali<br>FixRate<br>ProductName : "+val4+"<br>MRP : "+val2+
-                "<br>code : "+val1+generate(3)+val2+
-                "</div>";
-            document.getElementById('yo').appendChild(new_row);
-        }
-
-        function generate(n) {
-        var add = 1, max = 12 - add;   // 12 is the min safe number Math.random() can generate without it starting to pad the end with zeros.   
-
-        if ( n > max ) {
-                return generate(max) + generate(n - max);
-        }
-
-        max        = Math.pow(10, n+add);
-        var min    = max/10; // Math.pow(10, n) basically
-        var number = Math.floor( Math.random() * (max - min + 1) ) + min;
-
-        return ("" + number).substring(add); 
-}
-    </script>
+        document.getElementById('yo').appendChild(new_row);
+    }
+    if(printMe == 'true')
+    {
+        console.log('h')
+        window.print();
+    }
+</script>
 
 </html>
